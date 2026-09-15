@@ -3,11 +3,14 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "Gym Automation Panel",
    LoadingTitle = "Loading Script...",
-   LoadingSubtitle = "by Assistant",
+   LoadingSubtitle = "Made by eru 😜",
    ConfigurationSaving = { Enabled = false }
 })
 
 local MainTab = Window:CreateTab("Auto Gym", 4483362458) -- Icon ID
+
+-- Credit Label di dalam UI
+MainTab:CreateLabel("Made by eru 😜")
 
 -- Variable Pengaturan
 local isRunning = false
