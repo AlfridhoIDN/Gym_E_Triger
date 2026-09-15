@@ -1,24 +1,21 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- Ambil daftar key resmi dari GitHub kamu (ganti URL ini dengan URL RAW file key kamu)
--- Atau bisa kamu tulis manual di tabel di bawah ini:
-local validKeys = {
-    ["ERU-VIP-171"] = true,
-    ["AVCI-GYM-AJG"] = true,
-    ["RIZA-GTG-777"] = true
-}
+-- Ambil file daftar key dari GitHub
+local rawKeys = game:HttpGet("https://raw.githubusercontent.com/username/repository-kamu/main/keys.lua")
+local validKeys = loadstring(rawKeys)()
 
 local isKeyAccepted = false
 
--- Window Khusus Key System
-local KeyWindow = Rayfield:CreateWindow({
-   Name = "Key System - Gym Script",
+-- Buat Window Utama
+local Window = Rayfield:CreateWindow({
+   Name = "Gym Automation Panel",
    LoadingTitle = "Checking Key...",
    LoadingSubtitle = "Made by eru 😜",
    ConfigurationSaving = { Enabled = false }
 })
 
-local KeyTab = KeyWindow:CreateTab("Key Verification", 4483362458)
+-- Tab Verifikasi Key
+local KeyTab = Window:CreateTab("Key System", 4483362458)
 
 KeyTab:CreateInput({
    Name = "Masukkan Key Kamu",
@@ -26,29 +23,20 @@ KeyTab:CreateInput({
    RemoveTextOnFocusLost = false,
    Callback = function(Text)
        if validKeys[Text] then
-           Rayfield:Notify({Title = "Berhasil", Content = "Key Valid! Membuka Script...", Duration = 3})
+           Rayfield:Notify({Title = "Berhasil", Content = "Key Valid! Membuka Fitur...", Duration = 3})
            isKeyAccepted = true
-           task.wait(1)
-           Rayfield:Destroy() -- Tutup window key
        else
            Rayfield:Notify({Title = "Gagal", Content = "Key Tidak Valid!", Duration = 3})
        end
    end,
 })
 
--- Tunggu sampai user memasukkan key yang benar
+-- Tunggu sampai user memasukkan key yang valid
 repeat task.wait(0.5) until isKeyAccepted
 
 ---------------------------------------------------------
--- SCRIPT UTAMA GYM (Hanya berjalan jika Key Valid)
+-- FITUR GYM UTAMA (Muncul Tab Baru Setelah Key Valid)
 ---------------------------------------------------------
-
-local Window = Rayfield:CreateWindow({
-   Name = "Gym Automation Panel",
-   LoadingTitle = "Loading Script...",
-   LoadingSubtitle = "Made by eru 😜",
-   ConfigurationSaving = { Enabled = false }
-})
 
 local MainTab = Window:CreateTab("Auto Gym", 4483362458)
 MainTab:CreateLabel("Made by eru 😜")
