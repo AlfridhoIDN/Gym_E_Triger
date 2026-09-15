@@ -1,8 +1,18 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- Ambil file daftar key dari GitHub
-local rawKeys = game:HttpGet("https://raw.githubusercontent.com/username/repository-kamu/main/keys.lua")
-local validKeys = loadstring(rawKeys)()
+-- PASTIIN LINK DI BAWAH INI ADALAH LINK "RAW" GITHUB (Ada tulisan raw.githubusercontent.com)
+local keyFileURL = "https://raw.githubusercontent.com/username/repository-kamu/main/keys.lua"
+
+local validKeys = {}
+local success, result = pcall(function()
+    return loadstring(game:HttpGet(keyFileURL))()
+end)
+
+if success and type(result) == "table" then
+    validKeys = result
+else
+    warn("Gagal mengambil data key dari GitHub. Cek URL RAW kamu!")
+end
 
 local isKeyAccepted = false
 
@@ -26,7 +36,7 @@ KeyTab:CreateInput({
            Rayfield:Notify({Title = "Berhasil", Content = "Key Valid! Membuka Fitur...", Duration = 3})
            isKeyAccepted = true
        else
-           Rayfield:Notify({Title = "Gagal", Content = "Key Tidak Valid!", Duration = 3})
+           Rayfield:Notify({Title = "Gagal", Content = "Key Tidak Valid atau Gagal Download!", Duration = 3})
        end
    end,
 })
@@ -35,7 +45,7 @@ KeyTab:CreateInput({
 repeat task.wait(0.5) until isKeyAccepted
 
 ---------------------------------------------------------
--- FITUR GYM UTAMA (Muncul Tab Baru Setelah Key Valid)
+-- FITUR GYM UTAMA
 ---------------------------------------------------------
 
 local MainTab = Window:CreateTab("Auto Gym", 4483362458)
