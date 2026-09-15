@@ -1,17 +1,23 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- PASTIIN LINK DI BAWAH INI ADALAH LINK "RAW" GITHUB (Ada tulisan raw.githubusercontent.com)
-local keyFileURL = "https://raw.githubusercontent.com/username/repository-kamu/main/keys.lua"
+-- Link RAW ke file keys.lua kamu
+local keyFileURL = "https://raw.githubusercontent.com/AlfridhoIDN/Gym_E_Triger/refs/heads/main/keys.lua"
 
 local validKeys = {}
-local success, result = pcall(function()
-    return loadstring(game:HttpGet(keyFileURL))()
-end)
 
-if success and type(result) == "table" then
-    validKeys = result
+-- Ambil string isi file keys.lua
+local rawContent = game:HttpGet(keyFileURL)
+
+-- Konversi string menjadi fungsi Lua dengan aman
+if rawContent then
+    local loadedFunc = loadstring(rawContent)
+    if loadedFunc then
+        validKeys = loadedFunc() or {}
+    else
+        warn("Sintaks file keys.lua salah/error!")
+    end
 else
-    warn("Gagal mengambil data key dari GitHub. Cek URL RAW kamu!")
+    warn("Gagal mendownload file keys.lua!")
 end
 
 local isKeyAccepted = false
@@ -36,7 +42,7 @@ KeyTab:CreateInput({
            Rayfield:Notify({Title = "Berhasil", Content = "Key Valid! Membuka Fitur...", Duration = 3})
            isKeyAccepted = true
        else
-           Rayfield:Notify({Title = "Gagal", Content = "Key Tidak Valid atau Gagal Download!", Duration = 3})
+           Rayfield:Notify({Title = "Gagal", Content = "Key Tidak Valid!", Duration = 3})
        end
    end,
 })
