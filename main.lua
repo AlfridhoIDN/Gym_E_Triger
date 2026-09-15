@@ -1,5 +1,48 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
+-- Ambil daftar key resmi dari GitHub kamu (ganti URL ini dengan URL RAW file key kamu)
+-- Atau bisa kamu tulis manual di tabel di bawah ini:
+local validKeys = {
+    ["ERU-VIP-171"] = true,
+    ["AVCI-GYM-AJG"] = true,
+    ["RIZA-GTG-777"] = true
+}
+
+local isKeyAccepted = false
+
+-- Window Khusus Key System
+local KeyWindow = Rayfield:CreateWindow({
+   Name = "Key System - Gym Script",
+   LoadingTitle = "Checking Key...",
+   LoadingSubtitle = "Made by eru 😜",
+   ConfigurationSaving = { Enabled = false }
+})
+
+local KeyTab = KeyWindow:CreateTab("Key Verification", 4483362458)
+
+KeyTab:CreateInput({
+   Name = "Masukkan Key Kamu",
+   PlaceholderText = "Input Key Di Sini...",
+   RemoveTextOnFocusLost = false,
+   Callback = function(Text)
+       if validKeys[Text] then
+           Rayfield:Notify({Title = "Berhasil", Content = "Key Valid! Membuka Script...", Duration = 3})
+           isKeyAccepted = true
+           task.wait(1)
+           Rayfield:Destroy() -- Tutup window key
+       else
+           Rayfield:Notify({Title = "Gagal", Content = "Key Tidak Valid!", Duration = 3})
+       end
+   end,
+})
+
+-- Tunggu sampai user memasukkan key yang benar
+repeat task.wait(0.5) until isKeyAccepted
+
+---------------------------------------------------------
+-- SCRIPT UTAMA GYM (Hanya berjalan jika Key Valid)
+---------------------------------------------------------
+
 local Window = Rayfield:CreateWindow({
    Name = "Gym Automation Panel",
    LoadingTitle = "Loading Script...",
@@ -7,12 +50,9 @@ local Window = Rayfield:CreateWindow({
    ConfigurationSaving = { Enabled = false }
 })
 
-local MainTab = Window:CreateTab("Auto Gym", 4483362458) -- Icon ID
-
--- Credit Label di dalam UI
+local MainTab = Window:CreateTab("Auto Gym", 4483362458)
 MainTab:CreateLabel("Made by eru 😜")
 
--- Variable Pengaturan
 local isRunning = false
 local holdDuration = 5
 local cooldownMinutes = 5
@@ -25,7 +65,6 @@ local function holdE()
     VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
 end
 
--- Loop Utamasi
 task.spawn(function()
     while true do
         if isRunning then
@@ -40,7 +79,6 @@ task.spawn(function()
                 
                 Rayfield:Notify({Title = "Status", Content = "Cooldown dimulai (" .. cooldownMinutes .. " menit)", Duration = 5})
                 
-                -- Jeda Cooldown (diubah ke detik)
                 local cdSeconds = cooldownMinutes * 60
                 for i = cdSeconds, 1, -1 do
                     if not isRunning then break end
@@ -48,12 +86,11 @@ task.spawn(function()
                 end
             end
         else
-            task.wait(1) -- Cek status toggle setiap detik jika matikan
+            task.wait(1)
         end
     end
 end)
 
--- UI Controls
 local Toggle = MainTab:CreateToggle({
    Name = "Enable Auto Gym (Hold E)",
    CurrentValue = false,
